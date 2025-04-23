@@ -2,6 +2,8 @@ package com.bignerdranch.android.mapboxbase;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
+
 import com.mapbox.maps.MapView;
 import com.mapbox.maps.Style;
 import com.mapbox.maps.MapboxMap;
@@ -14,7 +16,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); // Make sure this matches your XML filename
+        setContentView(R.layout.activity_main);// Make sure this matches your XML filename
+        Button zoomIn = findViewById(R.id.zoom_in_button);
+        Button zoomOut = findViewById(R.id.zoom_out_button);
+
+        zoomIn.setOnClickListener(v -> {
+            mapView.getMapboxMap().setCamera(
+                    new CameraOptions.Builder()
+                            .zoom(mapView.getMapboxMap().getCameraState().getZoom() + 1)
+                            .build()
+            );
+        });
+
+        zoomOut.setOnClickListener(v -> {
+            mapView.getMapboxMap().setCamera(
+                    new CameraOptions.Builder()
+                            .zoom(mapView.getMapboxMap().getCameraState().getZoom() - 1)
+                            .build()
+            );
+        });
+
 
         mapView = findViewById(R.id.mapView);
         MapboxMap mapboxMap = mapView.getMapboxMap();
