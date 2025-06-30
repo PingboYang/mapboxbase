@@ -26,6 +26,7 @@ android {
 
     buildFeatures {
         viewBinding true
+        compose true
     }
 
     compileOptions {
@@ -38,5 +39,24 @@ android {
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
-    implementation 'com.mapbox.maps:android:10.14.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+    //implementation 'com.mapbox.maps:android:10.14.1'
+    implementation 'com.mapbox.maps:android:11.13.1'
+    implementation 'com.mapbox.search:autofill:2.7.0'
+    implementation 'com.mapbox.search:discover:2.7.0'
+    implementation "com.mapbox.navigationcore:android:3.10.0"  // Adds core Navigation SDK functionality
+    //implementation 'com.mapbox.maps:plugin-annotation:11.10.0'
+
+
+    // Navigation UI (includes RouteLine, RouteLineResources, etc.)
+    //implementation 'com.mapbox.navigation:ui-dropin:3.10.0'
+    // Gestures (if you are using map gestures like pan, zoom, etc.)
+    //implementation 'com.mapbox.maps:plugin-gestures:11.13.1'
+
+
+
+
+
 }

@@ -2,6 +2,7 @@ package com.bignerdranch.android.mapboxbase;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -10,6 +11,11 @@ import com.mapbox.maps.Style;
 import com.mapbox.maps.MapboxMap;
 import com.mapbox.geojson.Point;
 import com.mapbox.maps.CameraOptions;
+import com.mapbox.maps.plugin.Plugin;
+import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,10 +72,36 @@ public class MainActivity extends AppCompatActivity {
             );
         });
 
-        // You can later add click listeners for Mapbox Route and Safe Route buttons
+
+
         mapboxRouteButton.setOnClickListener(v -> {
-            // TODO: Add logic to call Mapbox Directions API
+            String startAddress = startLocationEditText.getText().toString().trim();
+            String token = getString(R.string.mapbox_access_token);
+
+            GeocodingHelper.geocodeLocation(startAddress, token, new GeocodingHelper.GeocodingCallback() {
+                @Override
+                public void onResult(Point point) {
+                    Log.d("Geocoding", "Result: " + point.toString());
+
+                    // Optional: Move camera to geocoded point
+                    mapView.getMapboxMap().setCamera(
+                            new CameraOptions.Builder()
+                                    .center(point)
+                                    .zoom(14.0)
+                                    .build()
+                    );
+                }
+
+                @Override
+                public void onError(String message) {
+                    Log.e("Geocoding", "Error: " + message);
+                }
+            });
         });
+
+
+
+
 
         safeRouteButton.setOnClickListener(v -> {
             // TODO: Add logic to call your Safe Route backend
