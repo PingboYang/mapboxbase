@@ -11,10 +11,6 @@ import com.mapbox.maps.Style;
 import com.mapbox.maps.MapboxMap;
 import com.mapbox.geojson.Point;
 import com.mapbox.maps.CameraOptions;
-import com.mapbox.maps.plugin.Plugin;
-import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
 
 
 public class MainActivity extends AppCompatActivity {

@@ -58,5 +58,12 @@ dependencies {
 
 
 
-
+    implementation libs.place.autocomplete
+    implementation libs.search.discover
+    implementation libs.search.autofill
+    implementation libs.mapbox.search.android.ui
+    implementation libs.mapbox.search.android
+    implementation libs.offline
+    implementation libs.mapbox.navigation.android
+    implementation libs.mapbox.navigation.ui.maps
 }

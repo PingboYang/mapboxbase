@@ -8,6 +8,8 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
 composeBom = "2024.04.01"
+mapboxNavigationAndroid = "3.10.0"
+mapboxSearchAndroid = "2.13.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -24,6 +26,14 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+mapbox-search-android = { module = "com.mapbox.search:mapbox-search-android", version.ref = "mapboxSearchAndroid" }
+mapbox-search-android-ui = { module = "com.mapbox.search:mapbox-search-android-ui", version.ref = "mapboxSearchAndroid" }
+offline = { module = "com.mapbox.search:offline", version.ref = "mapboxSearchAndroid" }
+place-autocomplete = { module = "com.mapbox.search:place-autocomplete", version.ref = "mapboxSearchAndroid" }
+search-autofill = { module = "com.mapbox.search:autofill", version.ref = "mapboxSearchAndroid" }
+search-discover = { module = "com.mapbox.search:discover", version.ref = "mapboxSearchAndroid" }
+mapbox-navigation-android = { module = "com.mapbox.navigationcore:android", version.ref = "mapboxNavigationAndroid" }
+mapbox-navigation-ui-maps = { module = "com.mapbox.navigationcore:ui-maps", version.ref = "mapboxNavigationAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

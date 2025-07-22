@@ -55,7 +55,7 @@
         <!-- Start location -->
         <EditText
             android:id="@+id/startLocationEditText"
-            android:hint="Start Location (lat,lng)"
+            android:hint="Start Location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
@@ -63,7 +63,7 @@
         <!-- Destination location -->
         <EditText
             android:id="@+id/destinationEditText"
-            android:hint="Destination (lat,lng)"
+            android:hint="Destination"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
