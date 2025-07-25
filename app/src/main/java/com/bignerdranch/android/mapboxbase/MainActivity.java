@@ -130,9 +130,23 @@ public class MainActivity extends AppCompatActivity {
         MapboxRouteLineViewOptions viewOptions = new MapboxRouteLineViewOptions.Builder(this).build();
         MapboxRouteLineView routeLineView = new MapboxRouteLineView(viewOptions);
 
-
-
         mapboxRouteButton.setOnClickListener(v -> {
+            MapboxRouteHandler.handleRoute(
+                this,
+                startLocationEditText,
+                destinationEditText,
+                mapboxNavigation,
+                mapView,
+                routeLineApi,
+                routeLineView,
+                getString(R.string.mapbox_access_token)
+            );
+        });
+
+
+
+
+        /*mapboxRouteButton.setOnClickListener(v -> {
             String startAddress = startLocationEditText.getText().toString().trim();
             String destinationAddress = destinationEditText.getText().toString().trim();
             String token = getString(R.string.mapbox_access_token);
@@ -230,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("Geocode", "Origin geocoding failed: " + t.getMessage());
                 }
             });
-        });
+        });*/
 
 
 
