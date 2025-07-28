@@ -96,7 +96,13 @@ class MainActivity : AppCompatActivity() {
 
         // Step 6: Safe route (if needed)
         safeRouteButton.setOnClickListener {
-            // TODO: Implement Safe Route logic
+            SafeRouteHandler.handleSafeRoute(
+                context = this,
+                startEditText = startLocationEditText,
+                destinationEditText = destinationEditText,
+                mapView = mapView,
+                apiKey = getString(R.string.google_maps_api_key)
+            )
         }
 
         // Optional: Autofill setup if needed
@@ -117,17 +123,4 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         mapView.onDestroy()
     }
-
-    // Optional if you need Address Autofill setup
-//    private fun setupAddressAutofill() {
-//        val startAutofillHelper = AddressAutofillHelper(
-//            getString(R.string.mapbox_access_token), startLocationEditText, mapView
-//        )
-//        startAutofillHelper.setup()
-//
-//        val destinationAutofillHelper = AddressAutofillHelper(
-//            getString(R.string.mapbox_access_token), destinationEditText, mapView
-//        )
-//        destinationAutofillHelper.setup()
-//    }
 }
