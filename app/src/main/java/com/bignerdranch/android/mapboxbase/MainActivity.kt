@@ -100,10 +100,10 @@ class MainActivity : AppCompatActivity() {
                 context = this,
                 startEditText = startLocationEditText,
                 destinationEditText = destinationEditText,
-                mapView = mapView,
-                apiKey = getString(R.string.google_maps_api_key)
+                mapView = mapView
             )
         }
+
 
         // Optional: Autofill setup if needed
         // setupAddressAutofill()
