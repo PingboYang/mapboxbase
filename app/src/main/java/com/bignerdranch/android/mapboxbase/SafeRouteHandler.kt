@@ -19,8 +19,7 @@ object SafeRouteHandler {
         context: Context,
         startEditText: EditText,
         destinationEditText: EditText,
-        mapView: MapView,
-        apiKey: String
+        mapView: MapView
     ) {
         val originText = startEditText.text.toString()
         val destinationText = destinationEditText.text.toString()
@@ -29,12 +28,13 @@ object SafeRouteHandler {
 
         geocodeAddress(context, originText) { originPoint ->
             geocodeAddress(context, destinationText) { destinationPoint ->
-                fetchSafeRoute(originPoint, destinationPoint, apiKey) { polylinePoints ->
+                fetchSafeRouteFromBackend(originPoint, destinationPoint) { polylinePoints ->
                     drawPolylineOnMap(mapView, polylinePoints)
                 }
             }
         }
     }
+
 
     private fun geocodeAddress(context: Context, address: String, callback: (Point) -> Unit) {
         Thread {
@@ -52,36 +52,59 @@ object SafeRouteHandler {
         }.start()
     }
 
-    private fun fetchSafeRoute(
+    private fun fetchSafeRouteFromBackend(
         origin: Point,
         destination: Point,
-        apiKey: String,
         callback: (List<Point>) -> Unit
     ) {
         Thread {
             try {
+                val startLat = origin.latitude()
+                val startLng = origin.longitude()
+                val destLat = destination.latitude()
+                val destLng = destination.longitude()
+                val gridCode = 9
+
                 val urlString =
-                    "https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude()},${origin.longitude()}&destination=${destination.latitude()},${destination.longitude()}&key=$apiKey"
+                    "https://backend-collision.onrender.com/api/NYCSafeRouteWithPoints" +
+                            "?latitude1=$startLat&longitude1=$startLng" +
+                            "&latitude2=$destLat&longitude2=$destLng&gridcode=$gridCode"
+
                 val connection = URL(urlString).openConnection() as HttpURLConnection
                 connection.requestMethod = "GET"
                 val response = connection.inputStream.bufferedReader().use { it.readText() }
 
                 val json = JSONObject(response)
-                val polyline = json
-                    .getJSONArray("routes")
-                    .getJSONObject(0)
-                    .getJSONObject("overview_polyline")
-                    .getString("points")
+                val dataset = json.getJSONArray("dataset")
 
-                val decodedPoints = decodePolyline(polyline)
+                val pathPoints = mutableListOf<Point>()
 
-                // Run UI update
-                callbackOnMainThread(callback, decodedPoints)
+                for (i in 0 until dataset.length()) {
+                    val line = dataset.getJSONObject(i)
+                    val geom = line.getJSONObject("geom")
+                    val coordinates = geom.getJSONArray("coordinates")
+
+                    for (j in 0 until coordinates.length()) {
+                        val coord = coordinates.getJSONArray(j)
+                        val lng = coord.getDouble(0)
+                        val lat = coord.getDouble(1)
+                        val point = Point.fromLngLat(lng, lat)
+
+                        // Avoid duplicate points (optional)
+                        if (pathPoints.isEmpty() || pathPoints.last() != point) {
+                            pathPoints.add(point)
+                        }
+                    }
+                }
+
+                callbackOnMainThread(callback, pathPoints)
+
             } catch (e: Exception) {
-                Log.e("SafeRouteHandler", "API call failed: ${e.message}")
+                Log.e("SafeRouteHandler", "Failed to fetch safe route: ${e.message}")
             }
         }.start()
     }
+
 
     private fun callbackOnMainThread(callback: (List<Point>) -> Unit, result: List<Point>) {
         // Run callback on UI thread
