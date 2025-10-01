@@ -27,18 +27,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Zoom In"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_margin="10dp" />
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layout_marginBottom="5dp" />
 
         <Button
             android:id="@+id/zoom_out_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Zoom Out"
-            android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@id/zoom_in_button"
-            android:layout_margin="10dp" />
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
     </LinearLayout>
 
 
@@ -53,20 +52,38 @@
         android:padding="10dp">
 
         <!-- Start location -->
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/startLocationEditText"
             android:hint="Start Location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text" />
+            android:inputType="text"
+            android:imeOptions="actionNext"
+            android:nextFocusDown="@+id/destinationEditText"
+            android:layout_marginBottom="10dp" />
 
         <!-- Destination location -->
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/destinationEditText"
             android:hint="Destination"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text" />
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Route Information -->
+        <TextView
+            android:id="@+id/routeInfoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Route information will appear here"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:background="#E8F4FD"
+            android:padding="8dp"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone" />
 
         <!-- Buttons -->
         <LinearLayout
@@ -85,6 +102,45 @@
             <Button
                 android:id="@+id/safeRouteButton"
                 android:text="Safe Route"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp" />
+
+            <Button
+                android:id="@+id/startNavigationButton"
+                android:text="Start Navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- Navigation Controls -->
+        <LinearLayout
+            android:id="@+id/navigationControls"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/stopNavigationButton"
+                android:text="Stop Navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp" />
+
+            <Button
+                android:id="@+id/recenterButton"
+                android:text="Recenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp" />
+
+            <Button
+                android:id="@+id/soundButton"
+                android:text="🔊"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>

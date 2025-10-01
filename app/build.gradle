@@ -57,15 +57,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     //implementation 'com.mapbox.maps:android:10.14.1'
     implementation 'com.mapbox.maps:android:11.13.1'
-//    implementation "com.mapbox.search:autofill:2.14.0-beta.1"
-//    implementation "com.mapbox.search:discover:2.14.0-beta.1"
-//    implementation "com.mapbox.search:place-autocomplete:2.14.0-beta.1"
-//    implementation "com.mapbox.search:offline:2.14.0-beta.1"
-//    implementation "com.mapbox.search:mapbox-search-android:2.14.0-beta.1"
-//    implementation "com.mapbox.search:mapbox-search-android-ui:2.14.0-beta.1"
-//    implementation "com.mapbox.search:autofill:2.14.0-beta.1"
-//    implementation 'com.mapbox.search:autofill:2.7.0'
-//    implementation 'com.mapbox.search:discover:2.7.0'
     implementation 'com.mapbox.search:mapbox-search-android:2.7.0'
     implementation 'com.mapbox.search:mapbox-search-android-ui:2.7.0'
     implementation "com.mapbox.navigationcore:ui-components:3.11.0-rc.1"
@@ -78,11 +69,6 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview:1.8.3"
     debugImplementation "androidx.compose.ui:ui-tooling:1.8.3"
 
-    //implementation 'com.mapbox.maps:plugin-annotation:11.10.0'
-
-
-    // Navigation UI (includes RouteLine, RouteLineResources, etc.)
-    //implementation 'com.mapbox.navigation:ui-dropin:3.10.0'
-    // Gestures (if you are using map gestures like pan, zoom, etc.)
-    //implementation 'com.mapbox.maps:plugin-gestures:11.13.1'
+    // Annotation plugin for drawing polylines
+    // implementation 'com.mapbox.maps:plugin-annotation:11.13.1'
 }
