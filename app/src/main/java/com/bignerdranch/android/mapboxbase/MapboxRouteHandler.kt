@@ -47,7 +47,8 @@ object MapboxRouteHandler {
         mapView: MapView,
         routeLineApi: MapboxRouteLineApi,
         routeLineView: MapboxRouteLineView,
-        accessToken: String
+        accessToken: String,
+        onComplete: (() -> Unit)? = null
     ) {
         val rawStart = startEdit.text.toString().trim()
         val rawEnd = endEdit.text.toString().trim()
@@ -79,9 +80,11 @@ object MapboxRouteHandler {
 
                                 val builder = RouteOptions.builder()
                                     .coordinatesList(listOf(origin, destination))
-                                    .profile(DirectionsCriteria.PROFILE_DRIVING)
+                                    .profile(DirectionsCriteria.PROFILE_DRIVING_TRAFFIC) // Enable traffic-aware routing
                                     .overview(DirectionsCriteria.OVERVIEW_FULL)
                                     .steps(true)
+                                    .voiceInstructions(true) // Enable voice instructions
+                                    .bannerInstructions(true) // Enable banner instructions
                                     .applyDefaultNavigationOptions()
 
                                 mapboxNavigation.requestRoutes(
@@ -92,6 +95,7 @@ object MapboxRouteHandler {
                                             routerOrigin: String
                                         ) {
                                             if (routes.isNotEmpty()) {
+                                                // Set routes for navigation
                                                 mapboxNavigation.setNavigationRoutes(routes)
                                                 routeLineApi.setNavigationRoutes(
                                                     routes,
@@ -108,6 +112,17 @@ object MapboxRouteHandler {
                                                         .zoom(12.0)
                                                         .build()
                                                 )
+                                                
+                                                // Show navigation button when route is calculated
+                                                if (context is MainActivity) {
+                                                    context.runOnUiThread {
+                                                        context.findViewById<android.widget.Button>(R.id.startNavigationButton)?.visibility = android.view.View.VISIBLE
+                                                        android.widget.Toast.makeText(context, "Route calculated successfully!", android.widget.Toast.LENGTH_SHORT).show()
+                                                        // Update route info
+                                                        context.updateRouteInfo(routes.first())
+                                                    }
+                                                }
+                                                onComplete?.invoke()
                                             }
                                         }
 
@@ -116,6 +131,12 @@ object MapboxRouteHandler {
                                             routeOptions: RouteOptions
                                         ) {
                                             Log.e("RouteRequest", "Route failure: $reasons")
+                                            if (context is MainActivity) {
+                                                context.runOnUiThread {
+                                                    android.widget.Toast.makeText(context, "Failed to calculate route: ${reasons.firstOrNull()?.message}", android.widget.Toast.LENGTH_LONG).show()
+                                                }
+                                            }
+                                            onComplete?.invoke()
                                         }
 
                                         override fun onCanceled(
@@ -123,25 +144,50 @@ object MapboxRouteHandler {
                                             routerOrigin: String
                                         ) {
                                             Log.d("RouteRequest", "Route request canceled")
+                                            onComplete?.invoke()
                                         }
                                     }
                                 )
                             } else {
                                 Log.e("Geocode", "Destination not found.")
+                                if (context is MainActivity) {
+                                    context.runOnUiThread {
+                                        android.widget.Toast.makeText(context, "Destination not found. Please try a different address.", android.widget.Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                                onComplete?.invoke()
                             }
                         }
 
                         override fun onFailure(call: Call<V6Response>, t: Throwable) {
                             Log.e("Geocode", "Destination geocode failed: ${t.message}")
+                            if (context is MainActivity) {
+                                context.runOnUiThread {
+                                    android.widget.Toast.makeText(context, "Failed to find destination: ${t.message}", android.widget.Toast.LENGTH_LONG).show()
+                                }
+                            }
+                            onComplete?.invoke()
                         }
                     })
                 } else {
                     Log.e("Geocode", "Origin not found.")
+                    if (context is MainActivity) {
+                        context.runOnUiThread {
+                            android.widget.Toast.makeText(context, "Start location not found. Please try a different address.", android.widget.Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    onComplete?.invoke()
                 }
             }
 
             override fun onFailure(call: Call<V6Response>, t: Throwable) {
                 Log.e("Geocode", "Origin geocode failed: ${t.message}")
+                if (context is MainActivity) {
+                    context.runOnUiThread {
+                        android.widget.Toast.makeText(context, "Failed to find start location: ${t.message}", android.widget.Toast.LENGTH_LONG).show()
+                    }
+                }
+                onComplete?.invoke()
             }
         })
     }
